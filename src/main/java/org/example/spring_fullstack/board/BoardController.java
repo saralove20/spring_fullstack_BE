@@ -5,6 +5,8 @@ import org.example.spring_fullstack.board.model.BoardDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -22,6 +24,13 @@ public class BoardController {
     @GetMapping("/read/{idx}")
     public ResponseEntity read(@PathVariable Long idx) {
         BoardDto.ReadRes result = boardService.read(idx);
+        return ResponseEntity.ok(result);
+    }
+
+    // 게시글 목록 조회 (전체 조회)
+    @GetMapping("/read/list")
+    public ResponseEntity list() {
+        List<BoardDto.ReadRes> result = boardService.list();
         return ResponseEntity.ok(result);
     }
 }
