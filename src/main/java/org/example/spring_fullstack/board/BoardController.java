@@ -3,10 +3,7 @@ package org.example.spring_fullstack.board;
 import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.board.model.BoardDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/board")
@@ -14,9 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class BoardController {
     private final BoardService boardService;
 
+    // 게시글 작성
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody BoardDto.RegisterReq dto) {
         BoardDto.RegisterRes result = boardService.register(dto);
+        return ResponseEntity.ok(result);
+    }
+
+    // 게시글 상세 조회
+    @GetMapping("/read/{idx}")
+    public ResponseEntity read(@PathVariable Long idx) {
+        BoardDto.ReadRes result = boardService.read(idx);
         return ResponseEntity.ok(result);
     }
 }
