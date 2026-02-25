@@ -28,12 +28,19 @@ public class BoardController {
     }
 
     // 게시글 수정
-    @Transactional
     @PutMapping("/{idx}")
     public ResponseEntity update(@PathVariable Long idx, @RequestBody BoardDto.UpdateReq dto) {
         BoardDto.BoardRes result = boardService.update(idx, dto);
         return ResponseEntity.ok(result);
     }
+
+    // 게시글 삭제
+    @DeleteMapping("/{idx}")
+    public ResponseEntity delete(@PathVariable Long idx) {
+        boardService.delete(idx);
+        return ResponseEntity.ok("게시글 삭제 성공");
+    }
+
 
     // 게시글 상세 조회
     @GetMapping("/read/{idx}")

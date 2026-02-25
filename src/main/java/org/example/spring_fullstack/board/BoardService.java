@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.board.model.Board;
 import org.example.spring_fullstack.board.model.BoardDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class BoardService {
     }
 
     // 게시글 수정
+    @Transactional
     public BoardDto.BoardRes update(Long idx, BoardDto.UpdateReq dto) {
         // 1. idx를 통해 수정하고자 하는 idx 찾음, 엔티티 형식으로 반환
         Board board = boardRepository.findById(idx).orElseThrow(
@@ -34,6 +36,11 @@ public class BoardService {
 
         // 3. 수정된 Entity를 응답 DTO로 변환하여 반환
         return BoardDto.BoardRes.from(board);
+    }
+
+    // 게시글 삭제
+    public void delete(Long idx) {
+        boardRepository.deleteById(idx);
     }
 
     // 게시글 상세 조회
