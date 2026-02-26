@@ -6,11 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Builder
 @Entity
 public class Board {
     @Id
