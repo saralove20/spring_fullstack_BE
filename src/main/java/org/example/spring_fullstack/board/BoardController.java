@@ -3,7 +3,6 @@ package org.example.spring_fullstack.board;
 import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.board.model.BoardDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class BoardController {
     @DeleteMapping("/{idx}")
     public ResponseEntity delete(@PathVariable Long idx) {
         boardService.delete(idx);
-        return ResponseEntity.ok("게시글 삭제 성공");
+        return ResponseEntity.ok("idx: " + idx + "번 게시글 삭제 완료");
     }
 
 
