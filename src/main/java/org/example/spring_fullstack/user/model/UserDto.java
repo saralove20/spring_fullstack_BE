@@ -15,11 +15,11 @@ public class UserDto {
         private String password;
 
         // DTO -> 엔티티
-        public User toEntity() {
+        public User toEntity(String encodedPassword) {
             return User.builder()
                     .email(this.email)
                     .name(this.name)
-                    .password(this.password)
+                    .password(encodedPassword)
                     .build();
         }
     }

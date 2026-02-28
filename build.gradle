@@ -21,6 +21,7 @@ repositories {
 dependencies {
     // --- 스타터팩 ---
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // --- DB 연결 ---
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
