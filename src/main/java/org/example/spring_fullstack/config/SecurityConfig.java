@@ -20,6 +20,7 @@ package org.example.spring_fullstack.config;
  */
 
 import lombok.RequiredArgsConstructor;
+import org.example.spring_fullstack.config.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,11 +31,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration  // @Component 어노테이션 포함 (아래 @Bean 객체 생성 및 등록, 의존성 주입), 이 클래스가 설정 클래스임을 알려줌
 @RequiredArgsConstructor
 @EnableWebSecurity  // 스프링 시큐리티 기능을 켬 (but, 스프링 부트에서는 Security 의존성만 추가해도 자동으로 활성화 됨. 즉, 사실 이 어노테이션 없어도 됨)
 public class SecurityConfig {
+    private final JwtFilter jwtFilter;
 
     // 비밀번호 인코딩을 위한 (암호화 문자열로 만들기 위한) 객체
     // "문자열 -> 암호화 문자열"로만 만드는것 자체는 Spring Security랑 관련 없음
@@ -60,7 +63,9 @@ public class SecurityConfig {
                         // .permitAll() 전부 허용
                         // .authenticated()는 로그인 한 사용자만 허용
                         // .hasRole("ADMIN") AuthUserDetails 객체에서 ROLE_ADMIN 권한을 가진 사용자만 허용
-                        .anyRequest().permitAll()
+                        .requestMatchers("/user/signup", "/user/login", "/user/verify").permitAll()
+                        .requestMatchers("/board/register").authenticated()
+                        .anyRequest().authenticated()
         );
 
         // JWT를 쓰기 위해 기본 보안 기능을 다 끔
@@ -68,6 +73,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable);
+
+        // JWT 필터 추가
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();    // 메소드가 반환하는 객체를 빈으로 등록
     }
