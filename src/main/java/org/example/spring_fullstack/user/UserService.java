@@ -45,6 +45,14 @@ public class UserService implements UserDetailsService {
         return UserDto.SignupRes.from(user);
     }
 
+    // 이메일 인증
+    public void verify(String uuid) {
+        EmailVerify emailVerify = emailVerifyRepository.findByUuid(uuid).orElseThrow();
+        User user = userRepository.findByEmail(emailVerify.getEmail()).orElseThrow();
+        user.setEnable(true);
+        userRepository.save(user);
+    }
+
     // 로그인
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

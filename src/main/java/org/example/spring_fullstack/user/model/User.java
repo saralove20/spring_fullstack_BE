@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String name;
     private String password;
+    @Setter
     private boolean enable;
     private String role;
 }
