@@ -30,7 +30,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration  // @Component 어노테이션 포함 (아래 @Bean 객체 생성 및 등록, 의존성 주입), 이 클래스가 설정 클래스임을 알려줌
 @RequiredArgsConstructor

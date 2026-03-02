@@ -38,7 +38,7 @@ public class UserController {
         AuthUserDetails user = (AuthUserDetails) authentication.getPrincipal();     // 현재 로그인한 사용자 객체를 꺼내는 메서드
 
         if (user != null) {
-            String jwt = JwtUtil.createToken(user.getIdx(), user.getEmail(), "ROLE_USER");
+            String jwt = JwtUtil.createToken(user.getIdx(), user.getEmail(), user.getRole());
             return ResponseEntity.ok()
                     .header("Set-Cookie", "ATOKEN=" + jwt + "; path=/")   // JWT 토큰을 헤더로 설정해서 응답 (쿠키)
                     .body(UserDto.LoginRes.from(user));  // 응답 결과로 로그인한 사용자 정보 같이 반환

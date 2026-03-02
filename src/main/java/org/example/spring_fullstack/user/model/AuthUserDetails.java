@@ -17,6 +17,8 @@ public class AuthUserDetails implements UserDetails {
     private String email;
     private String password;
     private String name;
+    private boolean enable;
+    private String role;
 
     // 엔티티 -> DTO (AuthUserDetails)
     public static AuthUserDetails from(User user) {
@@ -25,17 +27,19 @@ public class AuthUserDetails implements UserDetails {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .name(user.getName())
+                .enable(user.isEnable())
+                .role(user.getRole())
                 .build();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enable;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override

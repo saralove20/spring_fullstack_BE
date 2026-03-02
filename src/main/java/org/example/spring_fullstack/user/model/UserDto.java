@@ -18,6 +18,8 @@ public class UserDto {
                     .email(this.email)
                     .name(this.name)
                     .password(encodedPassword)
+                    .enable(true)
+                    .role("ROLE_USER")
                     .build();
         }
     }
