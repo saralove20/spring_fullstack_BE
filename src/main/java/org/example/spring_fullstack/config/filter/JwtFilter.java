@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.utils.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,8 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+    private final JwtUtil jwtUtil;
 
     // JWT 검사 제외할 Url
     @Override
@@ -37,8 +40,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (cookie.getName().equals("ATOKEN")) {
                     // JwtUtil에서 토큰 생성 및 확인하도록 리팩토링
                     // Jwt 에서 정보 꺼내기
-                    String email = JwtUtil.getEmail(cookie.getValue());
-                    String role = JwtUtil.getRole(cookie.getValue());
+                    String email = jwtUtil.getEmail(cookie.getValue());
+                    String role = jwtUtil.getRole(cookie.getValue());
 
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
                             email,
