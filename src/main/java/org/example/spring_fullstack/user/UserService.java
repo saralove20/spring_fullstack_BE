@@ -2,6 +2,7 @@ package org.example.spring_fullstack.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.user.model.AuthUserDetails;
+import org.example.spring_fullstack.user.model.EmailVerify;
 import org.example.spring_fullstack.user.model.User;
 import org.example.spring_fullstack.user.model.UserDto;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,12 +11,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final EmailVerifyRepository emailVerifyRepository;
 
     // 회원가입
     public UserDto.SignupRes signup(UserDto.SignupReq dto) {
@@ -26,7 +30,17 @@ public class UserService implements UserDetailsService {
         User user = userRepository.save(dto.toEntity(encodedPassword));
 
         // 3. 이메일 인증 메일 보내기
-        emailService.sendWelcomeMail(dto.getEmail());
+        String uuid = UUID.randomUUID().toString();     // 이메일 인증에 사용할 고유 uuid 생성
+        emailService.sendWelcomeMail(uuid, dto.getEmail());
+
+        // 3-1. 이메일 전송 내역 저장
+        EmailVerify emailVerify =
+                EmailVerify.builder()
+                        .email(dto.getEmail())
+                        .uuid(uuid)
+                        .build();
+
+        emailVerifyRepository.save(emailVerify);
 
         return UserDto.SignupRes.from(user);
     }
