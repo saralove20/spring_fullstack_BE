@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     // 회원가입
     public UserDto.SignupRes signup(UserDto.SignupReq dto) {
@@ -23,6 +24,10 @@ public class UserService implements UserDetailsService {
 
         // 2. DTO를 엔티티로 변환 후 저장 (저장 후 idx 자동 세팅됨)
         User user = userRepository.save(dto.toEntity(encodedPassword));
+
+        // 3. 이메일 인증 메일 보내기
+        emailService.sendWelcomeMail(dto.getEmail());
+
         return UserDto.SignupRes.from(user);
     }
 

@@ -1,6 +1,22 @@
 spring:
     application:
         name: spring_fullstack
+
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${MAIL_ADDR}
+        password: ${MAIL_PASS}
+        properties:
+            mail:
+                smtp:
+                    starttls:
+                        enable: true
+                        required: true
+                    auth: true
+                    timeout: 5000
+
+
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
         url: ${DB_URL}
