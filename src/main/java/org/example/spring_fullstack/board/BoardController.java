@@ -2,6 +2,7 @@ package org.example.spring_fullstack.board;
 
 import lombok.RequiredArgsConstructor;
 import org.example.spring_fullstack.board.model.BoardDto;
+import org.example.spring_fullstack.common.model.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,21 +24,21 @@ public class BoardController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody BoardDto.RegisterReq dto) {
         BoardDto.BoardRes result = boardService.register(dto);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BaseResponse.success(result));
     }
 
     // 게시글 수정
     @PutMapping("/{idx}")
     public ResponseEntity update(@PathVariable Long idx, @RequestBody BoardDto.UpdateReq dto) {
         BoardDto.BoardRes result = boardService.update(idx, dto);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BaseResponse.success(result));
     }
 
     // 게시글 삭제
     @DeleteMapping("/{idx}")
     public ResponseEntity delete(@PathVariable Long idx) {
         boardService.delete(idx);
-        return ResponseEntity.ok("idx: " + idx + "번 게시글 삭제 완료");
+        return ResponseEntity.ok(BaseResponse.success("idx: " + idx + "번 게시글 삭제 완료"));
     }
 
 
@@ -45,13 +46,13 @@ public class BoardController {
     @GetMapping("/read/{idx}")
     public ResponseEntity read(@PathVariable Long idx) {
         BoardDto.BoardRes result = boardService.read(idx);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BaseResponse.success(result));
     }
 
     // 게시글 목록 조회 (전체 조회)
     @GetMapping("/read/list")
     public ResponseEntity list() {
         List<BoardDto.BoardRes> result = boardService.list();
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BaseResponse.success(result));
     }
 }
